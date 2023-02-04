@@ -1,0 +1,14 @@
+<h1> Welcome to Taskilicious </h1>
+<h2> Choose a category </h2>
+
+<mat-list role="list">
+    <mat-list-item role="listitem" *ngFor="let item of categories$ | async">
+        <button mat-button [routerLink]="'categories/' + item.id"> {{item.name }}</button>
+<button mat-button [routerLink]="'edit/' + item.id">
+    <mat-icon>edit</mat-icon>
+</button>
+    </mat-list-item>
+</mat-list>
+<button mat-mini-fab [routerLink]="'categories/create'">
+    <mat-icon>add</mat-icon>
+</button>
