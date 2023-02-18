@@ -1,0 +1,66 @@
+<div class="container">
+  <form
+    nz-form
+    [formGroup]="taskForm"
+    (ngSubmit)="submitForm()"
+    class="container-inner"
+  >
+    <header>{{ title }}</header>
+    <div *ngIf="!isLoading; else loader" class="form-inner">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your Name!">
+          <input formControlName="name" nz-input placeholder="Name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-select
+        class="select"
+        formControlName="category"
+        (ngModelChange)="validate($event)"
+        nzPlaceHolder="Choose a Category"
+      >
+        <nz-option
+          *ngFor="let category of categories"
+          [nzValue]="category.id"
+          [nzLabel]="category.name"
+        ></nz-option>
+      </nz-select>
+      <nz-checkbox-wrapper
+        style="width: 100%"
+        (nzOnChange)="selectedTeamMember($event)"
+      >
+        <div nz-row>
+          <div
+            nz-col
+            nzSpan="6"
+            *ngFor="let teamMember of teamMembers"
+            class="team-member"
+          >
+            <label
+              nz-checkbox
+              [nzValue]="teamMember.id"
+              [nzChecked]="teamMemberId.includes(teamMember.id)"
+            >
+              <img [src]="teamMember.avatar" alt="" />
+            </label>
+          </div>
+        </div>
+      </nz-checkbox-wrapper>
+      <nz-form-item>
+        <nz-form-control>
+          <button
+            class="mt-20"
+            nz-button
+            nzType="primary"
+            [nzLoading]="isLoading"
+            [disabled]="!taskForm.valid"
+          >
+            {{ button }}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+</div>
+<ng-template #loader>
+  <span nz-icon [nzType]="'sync'" [nzSpin]="true" class="loader"></span>
+</ng-template>

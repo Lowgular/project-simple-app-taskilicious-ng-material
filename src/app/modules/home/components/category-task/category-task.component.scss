@@ -1,0 +1,18 @@
+@import '.././categories/categories.component.scss';
+
+.add-category {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.team-member-image {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  img {
+    height: 40px;
+    margin-right: 5px;
+    width: 40px;
+  }
+}
