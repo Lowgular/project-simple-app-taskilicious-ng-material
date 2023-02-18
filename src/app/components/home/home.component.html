@@ -1,0 +1,14 @@
+<h1>{{title}}</h1>
+
+<h3>Choose a category</h3>
+
+<mat-nav-list>
+    <mat-list-item *ngFor="let category of categories">
+        <a [routerLink]="['categories', category.id]" matListItemTitle>{{category.name}}</a>
+        <button mat-icon-button (click)="onEdit(category)" matListItemMeta>
+            <mat-icon>edit</mat-icon>
+        </button>
+    </mat-list-item>
+</mat-nav-list>
+
+<a mat-mini-fab [routerLink]="['categories', 'create']"><mat-icon>add</mat-icon></a>

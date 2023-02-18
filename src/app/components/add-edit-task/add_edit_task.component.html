@@ -1,0 +1,38 @@
+<section>
+    <h1>{{ taskId > 0 ? 'Edit Task' : 'Create new task'}}</h1>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="name" placeholder="New Task" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Choose a Category</mat-label>
+        <mat-select [(ngModel)]="selectedCategory">
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{category.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <h4>Choose Team Members</h4>
+    <div class="team-members">
+        <div class="team-member" *ngFor="let member of teamMembers">
+            <h4>{{member.name}}</h4>
+            <div class="team-member-avatar">
+                <img [src]="member.avatar" alt="team-member-avatar">
+            </div>
+            <mat-checkbox [(ngModel)]="member.checked"></mat-checkbox>
+        </div>
+    </div>
+
+    <h4>Image</h4>
+    <div class="image-upload">
+        <img [src]="selectedImage" alt="selectedImage" *ngIf="!!selectedImage">
+        <input type="file" name="memberImage" id="memberImage" [disabled]="!(!!name && !!selectedCategory && isTeamMemberSelected())" (change)="onImageSelected($event)">
+    </div>
+
+    <button mat-raised-button color="primary" class="display-block" (click)="taskId > 0 ? updateTask() : createTask()">
+        {{ taskId > 0 ? 'Update' : 'Create'}}
+    </button>
+</section>

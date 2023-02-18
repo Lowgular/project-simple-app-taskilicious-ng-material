@@ -1,0 +1,10 @@
+<h1>{{categoryId > 0 ? 'Edit Category' : 'Create Category'}}</h1>
+
+<mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Write new category name" [(ngModel)]="name" required>
+</mat-form-field>
+
+<button mat-raised-button color="primary" class="display-block" (click)="categoryId > 0 ? editCategory() : createCategory()">
+    {{categoryId > 0 ? 'Submit' : 'Create'}}
+</button>

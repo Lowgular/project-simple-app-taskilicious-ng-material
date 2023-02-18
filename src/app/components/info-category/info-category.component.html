@@ -1,0 +1,56 @@
+<h1>Welcome to <span *ngIf="!!category.name">{{category.name}}</span></h1>
+
+<table mat-table [dataSource]="categoryTasks" class="mat-elevation-z8">
+    <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> Image </th>
+        <td mat-cell *matCellDef="let element"> 
+            <div class="member-image" *ngIf="element.hasOwnProperty('imageUrl') && !!element.imageUrl">
+                <img [src]="element.imageUrl" alt="member avatar">
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element['name']}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="categoryId">
+        <th mat-header-cell *matHeaderCellDef> Category Id </th>
+        <td mat-cell *matCellDef="let element"> {{element['categoryId']}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="teamMembers">
+        <th mat-header-cell *matHeaderCellDef> Team Members </th>
+        <td mat-cell *matCellDef="let element"> 
+            <div class="member-avatars" *ngIf="element.hasOwnProperty('teamMemberIds') && element.teamMemberIds.length > 0">
+                <div class="member-avatar" *ngFor="let memberId of element.teamMemberIds">
+                    <img [src]="getMemberAvatarById(memberId)" alt="member avatar">
+                </div>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> Edit </th>
+        <td mat-cell *matCellDef="let element"> 
+            <button [routerLink]="['/', 'tasks', 'edit', element.id]" mat-mini-fab>
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="remove">
+        <th mat-header-cell *matHeaderCellDef> Remove </th>
+        <td mat-cell *matCellDef="let element"> 
+            <button (click)="removeTask(element.id)" mat-mini-fab>
+                <mat-icon>remove</mat-icon>
+            </button> 
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+</table>
+
+<a mat-mini-fab [routerLink]="['/', 'tasks', 'create']"><mat-icon>add</mat-icon></a>
