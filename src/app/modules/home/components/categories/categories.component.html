@@ -1,0 +1,58 @@
+<div class="container">
+  <main class="container-inner">
+    <header>Welcome to Taskilicious</header>
+    <div>
+      <div class="category-inside-header">
+        <h6>Choose a category</h6>
+        <div (click)="addCategory()" class="add-category">
+          <span nz-icon nzType="plus-circle" nzTheme="fill"></span>
+        </div>
+      </div>
+
+      <button nz-button nz-dropdown [nzDropdownMenu]="sorting">
+        Choose an option
+        <span nz-icon nzType="down"></span>
+      </button>
+      <nz-dropdown-menu #sorting="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item (click)="sortByName('asc')">A-Z</li>
+          <li nz-menu-item (click)="sortByName('desc')">Z-A</li>
+        </ul>
+      </nz-dropdown-menu>
+
+      <nz-table
+        #basicTable
+        [nzData]="sortedCategories"
+        [nzLoading]="isLoading"
+        [nzLoadingIndicator]="loader"
+        class="table"
+      >
+        <thead>
+          <tr>
+            <th>S.N</th>
+            <th>Name</th>
+            <th class="text-end">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; let i = index">
+            <td>{{ data.id }}</td>
+            <td
+              (click)="navigateToCategoryDetail(data.id)"
+              class="edit-category"
+            >
+              {{ data.name }}
+            </td>
+            <td (click)="editCategory(data.id)" class="edit-category text-end">
+              <span nz-icon nzType="edit" nzTheme="fill"></span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </main>
+</div>
+
+<ng-template #loader>
+  <span nz-icon [nzType]="'sync'" [nzSpin]="true" class="loader"></span>
+</ng-template>

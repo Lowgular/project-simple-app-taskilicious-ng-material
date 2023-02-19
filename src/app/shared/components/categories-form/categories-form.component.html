@@ -1,0 +1,27 @@
+<div class="container">
+  <form nz-form [formGroup]="categoryForm" (ngSubmit)="submitForm()" class="container-inner">
+    <header>{{ title }}</header>
+    <div *ngIf="!isLoading; else loader" class="form-inner">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your category name!">
+          <input formControlName="userName" nz-input placeholder="Category" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button
+            nz-button
+            nzType="primary"
+            [nzLoading]="isLoading"
+            [disabled]="!categoryForm.valid"
+          >
+            {{button}}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+</div>
+<ng-template #loader>
+  <span nz-icon [nzType]="'sync'" [nzSpin]="true" class="loader"></span>
+</ng-template>

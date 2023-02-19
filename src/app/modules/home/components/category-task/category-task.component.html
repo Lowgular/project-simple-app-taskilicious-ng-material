@@ -1,0 +1,60 @@
+<div class="container">
+  <main class="container-inner">
+    <header>Welcome to category</header>
+    <div (click)="addTask()" class="add-category">
+      <span nz-icon nzType="plus-circle" nzTheme="fill"></span>
+    </div>
+    <nz-table
+      #basicTable
+      [nzData]="tasks"
+      [nzFrontPagination]="false"
+      [nzLoading]="isLoading"
+      [nzLoadingIndicator]="loader"
+      class="table"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Image</th>
+          <th>Category ID</th>
+          <th>Team Members</th>
+          <th class="text-end">Edit</th>
+          <th class="text-end">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks; let i = index">
+          <td>{{ task.name }}</td>
+          <td class="team-member-image">
+            <div *ngIf="task.imageUrl">
+              <img [src]="task.imageUrl" alt="" />
+            </div>
+          </td>
+          <td>{{ task.categoryId }}</td>
+          <td class="team-member-image">
+            <div *ngFor="let teamMember of teamMembers">
+              <div
+                *ngIf="
+                  task.teamMemberIds &&
+                  task.teamMemberIds.includes(teamMember.id)
+                "
+              >
+                <img [src]="teamMember.avatar" alt="image" />
+              </div>
+            </div>
+          </td>
+          <td (click)="editCategory(task.id)" class="edit-category text-end">
+            <span nz-icon nzType="edit" nzTheme="fill"></span>
+          </td>
+          <td (click)="deleteCategory(task.id)" class="edit-category text-end">
+            <span nz-icon nzType="delete" nzTheme="fill"></span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </main>
+</div>
+
+<ng-template #loader>
+  <span nz-icon [nzType]="'sync'" [nzSpin]="true" class="loader"></span>
+</ng-template>

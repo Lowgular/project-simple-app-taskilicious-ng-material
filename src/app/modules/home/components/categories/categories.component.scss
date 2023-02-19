@@ -1,0 +1,36 @@
+@import '../../../../app.component.scss';
+
+.container-inner {
+  .category-inside-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+
+    h6 {
+      font-size: 18px;
+    }
+  }
+
+  .add-category {
+    color: #1890ff;
+    cursor: pointer;
+    font-size: 35px;
+  }
+
+  .table {
+    margin-top: 30px;
+
+    .edit-category {
+      cursor: pointer;
+    }
+  }
+
+  .text-end {
+    text-align: end;
+  }
+
+  td {
+    border-bottom: 1px solid transparent;
+  }
+}

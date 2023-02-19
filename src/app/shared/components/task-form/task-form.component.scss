@@ -1,0 +1,22 @@
+@import '../../.././app.component.scss';
+
+.team-member {
+  margin: 20px 0;
+
+  img {
+    height: 80px;
+    object-fit: contain;
+    width: 80px;
+  }
+}
+
+.image {
+  display: flex;
+  margin-left: 30px;
+}
+
+.select {
+  border-radius: 5px;
+  line-height: 32px;
+  min-width: 200px;
+}
