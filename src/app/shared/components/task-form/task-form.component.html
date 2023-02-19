@@ -45,6 +45,16 @@
           </div>
         </div>
       </nz-checkbox-wrapper>
+      <div class="team-member image" *ngIf="image">
+        <img [src]="image" alt="" />
+      </div>
+      <ngx-uploadcare-widget
+        class="mt-20"
+        [images-only]="true"
+        [public-key]="uploadCarePublicKey"
+        (on-upload-complete)="onImageSelect($event)"
+      >
+      </ngx-uploadcare-widget>
       <nz-form-item>
         <nz-form-control>
           <button

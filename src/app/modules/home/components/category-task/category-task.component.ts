@@ -8,7 +8,7 @@ import {
   NzNotificationDataOptions,
   NzNotificationService,
 } from "ng-zorro-antd/notification";
-import { TeamMember } from "src/app/shared/models/team-members.model";
+import { TeamMember } from "src/app/shared/models/team-member.model";
 import { Task } from "src/app/shared/models/task.model";
 
 @Component({

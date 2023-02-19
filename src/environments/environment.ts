@@ -4,6 +4,7 @@
 
 export const environment = {
   baseURL: 'https://63761992b5f0e1eb850298da.mockapi.io',
+  uploadCarePublicKey:'b0e6a95f3ed476bc70f3',
   production: false
 };
 

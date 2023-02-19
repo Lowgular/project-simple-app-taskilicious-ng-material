@@ -10,7 +10,8 @@ import { CategoriesService } from "src/app/core/services/categories.service";
 import { CategoryTaskService } from "src/app/core/services/category-task.service";
 import { CategoriesList } from "../../models/categories-list.model";
 import { Task } from "../../models/task.model";
-import { TeamMember } from "../../models/team-members.model";
+import { TeamMember } from "../../models/team-member.model";
+import { environment } from "./../../../../environments/environment";
 
 @Component({
   selector: "app-task-form",
@@ -27,6 +28,10 @@ export class TaskFormComponent implements OnInit {
   public categoryId: string = "";
   public teamMembers: TeamMember[] = [];
   public teamMemberId: string[] = [];
+  public uploadCarePublicKey: string = environment.uploadCarePublicKey;
+  public imageUrl: string = "";
+  public image: string = "";
+
   private _destroyed$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -70,6 +75,7 @@ export class TaskFormComponent implements OnInit {
         formControls["category"].setValue(categoryId);
         this.categoryId = formControls["category"].value;
         if (teamMemberIds) this.teamMemberId = teamMemberIds;
+        if (res.imageUrl) this.image = res.imageUrl;
       });
   }
 
@@ -88,9 +94,8 @@ export class TaskFormComponent implements OnInit {
       name: formValue.name,
     };
 
-    if (this.teamMemberId) {
-      payload.teamMemberIds = this.teamMemberId;
-    }
+    if (this.teamMemberId.length) payload.teamMemberIds = this.teamMemberId;
+    if (this.imageUrl) payload.imageUrl = this.imageUrl;
 
     this.categoryTaskService
       .createTask(payload)
@@ -126,9 +131,9 @@ export class TaskFormComponent implements OnInit {
       categoryId: this.categoryId,
       name: formValue.name,
     };
-    if (this.teamMemberId) {
-      payload.teamMemberIds = this.teamMemberId;
-    }
+
+    if (this.teamMemberId) payload.teamMemberIds = this.teamMemberId;
+    if (this.imageUrl) payload.imageUrl = this.imageUrl;
 
     this.categoryTaskService
       .updateTask(this.categoryTask, payload)
@@ -197,5 +202,9 @@ export class TaskFormComponent implements OnInit {
 
   public selectedTeamMember(value: string[]): void {
     this.teamMemberId = value;
+  }
+
+  public onImageSelect(event: any): void {
+    this.imageUrl = event.originalUrl;
   }
 }
