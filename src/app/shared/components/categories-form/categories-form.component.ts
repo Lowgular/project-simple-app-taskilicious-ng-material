@@ -74,16 +74,27 @@ export class CategoriesFormComponent implements OnInit {
       .createCategory(payload)
       .pipe(
         takeUntil(this._destroyed$),
+        catchError((error) => {
+          return of(error);
+        }),
         finalize(() => {
           this.isLoading = false;
         })
       )
-      .subscribe(() => {
+      .subscribe((res) => {
         const notificationConfig: NzNotificationDataOptions = {
           nzPlacement: "bottomRight",
           nzDuration: 3000,
         };
-        this.notification.success("Created the List", "", notificationConfig);
+        if (res?.error) {
+          this.notification.error(
+            "Error creating category",
+            res.error,
+            notificationConfig
+          );
+        } else {
+          this.notification.success("Created the List", "", notificationConfig);
+        }
         this.router.navigate(["/"]);
       });
   }
