@@ -1,0 +1,35 @@
+<h1>{{formType}} task</h1>
+<form [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Type name" formControlName="name">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryId">
+            <mat-option *ngFor="let category of categoryList" [value]="category.id">
+                {{category.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <ul formArrayName="teamMembersIds" class="team-member-container no-bullets">
+        <li [formGroupName]="i" *ngFor="let item of teamMembersControls; let i = index">
+            <span> <img [src]="teamMembersList[i].avatar" lazy /> </span>
+            <mat-checkbox type="checkbox" formControlName="selected"> {{ teamMembersList[i].name }}
+            </mat-checkbox>
+        </li>
+    </ul>
+    <div class="file-container">
+        <label>Image </label>
+        <span *ngIf="form.value.imageUrl"> <img src="https://ucarecdn.com/{{form.value.imageUrl}}" lazy /> </span>
+        <input #fileUpload type="file" (change)="fileChange($event)" accept=".png,.jpg,.jpeg" placeholder="Choose file">
+    </div>
+</form>
+<ng-container *ngIf="formType === 'Create'">
+    <app-action-button [buttonText]="'Submit'" [type]="'plain'" (onClick)="onCreate()"></app-action-button>
+</ng-container>
+
+<ng-container *ngIf="formType === 'Edit'">
+    <app-action-button [buttonText]="'Update'" [type]="'plain'" (onClick)="onCreate()"></app-action-button>
+</ng-container>

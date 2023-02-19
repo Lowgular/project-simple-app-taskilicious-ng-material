@@ -1,0 +1,6 @@
+<h1>Welcome to Taskilicious</h1>
+<app-sort-dropdown></app-sort-dropdown>
+<ng-container *ngFor="let category of categoryList$ | async">
+    <li class="no-bullets">  <span (click)="categoryDetails(category)" class="pointer">{{category.name}} </span> <span> <mat-icon (click)="editCategory(category)">edit </mat-icon> </span></li>
+</ng-container>
+<app-action-button (onClick)="createCategory()"> </app-action-button>

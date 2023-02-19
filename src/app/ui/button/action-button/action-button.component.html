@@ -1,0 +1,21 @@
+<ng-container *ngIf="type === 'create' ">
+    <button mat-mini-fab aria-label="Create" (click)="onClickButton('create')">
+        <mat-icon>create</mat-icon>
+    </button>
+</ng-container>
+
+<ng-container *ngIf="type === 'edit' ">
+    <button mat-mini-fab aria-label="Edit" (click)="onClickButton('edit')">
+        <mat-icon>edit</mat-icon>
+    </button>
+</ng-container>
+
+<ng-container *ngIf="type === 'delete' ">
+    <button mat-mini-fab aria-label="Delete" (click)="onClickButton('delete')">
+        <mat-icon>clear</mat-icon>
+    </button>
+</ng-container>
+
+<ng-container *ngIf="type === 'plain' ">
+    <button mat-raised-button color="primary" (click)="onClickButton('plain')">{{buttonText}}</button>
+</ng-container>

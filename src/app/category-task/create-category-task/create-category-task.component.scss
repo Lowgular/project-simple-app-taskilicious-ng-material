@@ -1,0 +1,26 @@
+.team-member-container {
+  height: 370px;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  flex-wrap: wrap;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+span img {
+  height: 40px;
+  width: 40px;
+}
+
+.no-bullets {
+  list-style-type: none;
+}
+
+.file-container {
+  margin: 5px;
+}

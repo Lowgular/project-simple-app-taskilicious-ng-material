@@ -1,0 +1,15 @@
+<h1>{{formType}} Category</h1>
+<form [formGroup]="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Type name" formControlName="name">
+    </mat-form-field>
+</form>
+
+<ng-container *ngIf="formType === 'Create'">
+    <app-action-button [buttonText]="'Submit'" [type]="'plain'" (onClick)="createRecord()"></app-action-button>
+</ng-container>
+
+<ng-container *ngIf="formType === 'Edit'">
+    <app-action-button [buttonText]="'Update'" [type]="'plain'" (onClick)="updateRecord()"></app-action-button>
+</ng-container>

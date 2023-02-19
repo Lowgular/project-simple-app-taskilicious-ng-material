@@ -1,0 +1,49 @@
+<ng-container *ngIf="categoryDetails$ | async as category">
+    <h1>Welcome to category: {{category.category.name}} </h1>
+    <div class="example-container mat-elevation-z2">
+        <mat-table #table [dataSource]="category.categoryTask">
+            <ng-container matColumnDef="image">
+                <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+                <mat-cell *matCellDef="let element"> <ng-container *ngIf="element.imageUrl">
+                        <span> <img src="https://ucarecdn.com/{{element.imageUrl}}" lazy /> </span>
+                    </ng-container> </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="teamMemberIds">
+                <mat-header-cell *matHeaderCellDef> TeamMembers </mat-header-cell>
+                <mat-cell *matCellDef="let element"> <ng-container *ngIf="element.teamMember">
+                        <ng-container *ngFor="let item of element.teamMember">
+                            <span> <img [src]="item.avatar" lazy /> </span>
+                        </ng-container>
+                    </ng-container>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="categoryId">
+                <mat-header-cell *matHeaderCellDef> CategoryId </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.categoryId}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef> Edit </mat-header-cell>
+                <mat-cell *matCellDef="let element"><app-action-button [type]="'edit'"
+                        (onClick)="handleActionEvents($event,element)"> </app-action-button> </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="remove">
+                <mat-header-cell *matHeaderCellDef> Remove </mat-header-cell>
+                <mat-cell *matCellDef="let element"> <app-action-button [type]="'delete'"
+                        (onClick)="handleActionEvents($event, element)"> </app-action-button></mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="categoryListColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: categoryListColumns;"></mat-row>
+        </mat-table>
+    </div>
+    <app-action-button (onClick)="createCategoryTask()"> </app-action-button>
+</ng-container>
