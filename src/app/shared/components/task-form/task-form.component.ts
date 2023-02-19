@@ -42,7 +42,6 @@ export class TaskFormComponent implements OnInit {
     private categoryTaskService: CategoryTaskService,
     private notification: NzNotificationService
   ) {
-    this.categoryTask = Number(this.route.snapshot.paramMap.get("id"));
     this.taskForm = this.fb.group({
       name: ["", [Validators.required]],
       category: ["", [Validators.required]],
@@ -50,6 +49,9 @@ export class TaskFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.route.paramMap.subscribe((params: any) => {
+      this.categoryTask = params.get("id");
+    });
     this.getCategories();
     this.getTeamMembers();
     this.title = this.categoryTask ? "Edit Task" : "Create Task";

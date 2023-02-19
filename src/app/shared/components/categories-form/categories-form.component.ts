@@ -30,13 +30,15 @@ export class CategoriesFormComponent implements OnInit {
     private route: ActivatedRoute,
     private notification: NzNotificationService
   ) {
-    this.categoryId = Number(this.route.snapshot.paramMap.get("id"));
     this.categoryForm = this.fb.group({
       userName: ["", [Validators.required]],
     });
   }
 
   public ngOnInit(): void {
+    this.route.paramMap.subscribe((params: any) => {
+      this.categoryId = params.get("id");
+    });
     this.title = this.categoryId ? "Edit Category" : "Create Category";
     this.button = this.categoryId ? "Update" : "Create";
     if (this.categoryId) this.getCategory();

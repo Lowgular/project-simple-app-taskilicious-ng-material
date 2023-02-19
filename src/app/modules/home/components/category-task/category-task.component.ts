@@ -17,7 +17,7 @@ import { Task } from "src/app/shared/models/task.model";
   styleUrls: ["./category-task.component.scss"],
 })
 export class CategoryTaskComponent implements OnInit {
-  public categoryId: string | null = "";
+  public categoryId: string = "";
   public isLoading: boolean = false;
   public tasks: Task[] = [];
   public teamMembers: TeamMember[] = [];
@@ -29,11 +29,13 @@ export class CategoryTaskComponent implements OnInit {
     private categoryTaskService: CategoryTaskService,
     private router: Router,
     private notification: NzNotificationService
-  ) {
-    this.categoryId = this.route.snapshot.paramMap.get("id");
-  }
+  ) {}
 
   public ngOnInit(): void {
+    this.route.paramMap.subscribe((params: any) => {
+      const id = params.get("id");
+      this.categoryId = id.toString();
+    });
     this.getTask();
   }
 
