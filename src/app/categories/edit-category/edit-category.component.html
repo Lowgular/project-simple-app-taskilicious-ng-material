@@ -1,0 +1,10 @@
+<h1>Edit Category</h1>
+
+<form #category="ngForm" style="margin-left: 2%">
+    <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="name" required>
+    </mat-form-field>
+
+    <button style="display: block;" mat-raised-button type="submit" color="primary" [disabled]="category.invalid" (click)="editCategory(category.value)">Submit</button>
+</form>

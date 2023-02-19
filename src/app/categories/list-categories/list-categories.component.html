@@ -1,0 +1,13 @@
+<h1>Welcome to Taskilicious</h1>
+
+<h2><strong>Choose a category</strong></h2>
+
+<div style="margin-left: 3%">
+    <mat-list *ngFor="let category of categories">
+        <mat-list-item><div style="cursor: pointer" (click)="detail(category.id)">{{category.name}}</div> <button (click)="editCategory(category.id)" mat-flat-button style="margin-left: 1%"><mat-icon fontIcon="edit" color="warn"></mat-icon></button></mat-list-item>
+    </mat-list>
+
+    <button [routerLink]="'create'" mat-fab color="accent" aria-label="Example icon button with a add icon">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

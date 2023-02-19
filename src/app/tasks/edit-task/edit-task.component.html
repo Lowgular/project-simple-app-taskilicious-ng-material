@@ -1,0 +1,19 @@
+<h1>Edit Task</h1>
+
+<form #category="ngForm" style="margin-left: 2%">
+    <mat-form-field style="width: 20%" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="name" required>
+    </mat-form-field>
+
+    <mat-form-field style="display: block; width: 20%" class="example-full-width" appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select name="categoryId" [(ngModel)]="categoryId" required>
+            <mat-option *ngFor="let item of categories" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button style="display: block;" mat-raised-button type="submit" color="primary" [disabled]="category.invalid" (click)="editTask(category.value)">Update</button>
+</form>

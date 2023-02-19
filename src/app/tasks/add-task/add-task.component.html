@@ -1,0 +1,26 @@
+<h1>Create Task</h1>
+
+<form style="margin-left: 2%">
+    <mat-form-field style="width: 20%" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="name" required>
+    </mat-form-field>
+
+    <mat-form-field style="display: block; width: 20%" class="example-full-width" appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="categoryId" name="categoryId" required>
+            <mat-option *ngFor="let item of categories" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div>
+        <mat-checkbox style="margin-right: 1%" *ngFor="let option of team" name="team" (change)="onCheckboxChange($event, option.id)">
+            <img style="margin-left: 1%" [src]="option.avatar" [alt]="option.name" width="30">
+            {{ option.name }}
+        </mat-checkbox>
+    </div>
+
+    <button style="display: block;" mat-raised-button type="submit" color="primary" (click)="addTask()">Create</button>
+</form>
