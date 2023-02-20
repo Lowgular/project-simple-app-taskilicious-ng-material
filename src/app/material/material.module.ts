@@ -7,6 +7,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
 import { MatSelectModule } from "@angular/material/select";
+import { MatTableModule } from "@angular/material/table";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
@@ -19,6 +20,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MatInputModule,
     MatListModule,
     MatSelectModule,
+    MatTableModule,
     MatTooltipModule,
   ],
 })

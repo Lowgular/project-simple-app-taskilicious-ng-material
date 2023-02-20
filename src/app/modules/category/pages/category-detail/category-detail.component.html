@@ -1,1 +1,2 @@
 <h2 *ngIf="categoryData">{{title}} {{categoryData.name}}</h2>
+<app-tasks-table [categoryId]="categoryData!.id" *ngIf="categoryData"></app-tasks-table>

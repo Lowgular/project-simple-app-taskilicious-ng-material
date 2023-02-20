@@ -8,8 +8,9 @@ import { CategoriesListComponent } from "./components/categories-list/categories
 import { CategoriesFormComponent } from "./components/categories-form/categories-form.component";
 import { MaterialModule } from "src/app/material/material.module";
 import { CreateCategoryComponent } from "./pages/create-category/create-category.component";
-import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
-import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
+import { EditCategoryComponent } from "./pages/edit-category/edit-category.component";
+import { CategoryDetailComponent } from "./pages/category-detail/category-detail.component";
+import { TaskModule } from "../task/task.module";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CategoryDetailComponent } from './pages/category-detail/category-detail
     CommonModule,
     CategoryRoutingModule,
     MaterialModule,
+    TaskModule,
   ],
 })
 export class CategoryModule {}
