@@ -9,6 +9,7 @@ import { CategoriesFormComponent } from "./components/categories-form/categories
 import { MaterialModule } from "src/app/material/material.module";
 import { CreateCategoryComponent } from "./pages/create-category/create-category.component";
 import { EditCategoryComponent } from './pages/edit-category/edit-category.component';
+import { CategoryDetailComponent } from './pages/category-detail/category-detail.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { EditCategoryComponent } from './pages/edit-category/edit-category.compo
     CategoriesFormComponent,
     CreateCategoryComponent,
     EditCategoryComponent,
+    CategoryDetailComponent,
   ],
   imports: [
     FormsModule,
