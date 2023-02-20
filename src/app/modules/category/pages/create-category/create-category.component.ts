@@ -14,7 +14,6 @@ export class CreateCategoryComponent implements OnInit {
   ngOnInit(): void {}
 
   formResponse(event: string) {
-    console.log(event);
     if (event === "success") {
       this._location.back();
     }

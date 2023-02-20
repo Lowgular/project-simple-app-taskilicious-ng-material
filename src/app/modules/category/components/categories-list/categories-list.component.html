@@ -1,4 +1,7 @@
 <h2>{{title}}</h2>
 <mat-list role="list">
-    <mat-list-item role="listitem" *ngFor="let item of categories; let i=index">{{item.name}}</mat-list-item>
+    <mat-list-item role="listitem" *ngFor="let item of categories; let i=index">
+        {{item.name}}
+        <mat-icon class="pointer" [routerLink]="['edit/', item.id]">edit</mat-icon>
+    </mat-list-item>
 </mat-list>

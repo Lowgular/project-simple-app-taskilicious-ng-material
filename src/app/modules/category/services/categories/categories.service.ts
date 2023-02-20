@@ -34,4 +34,26 @@ export class CategoriesService {
       });
     });
   }
+
+  getOneCategory(categoryId: string): Promise<Category> {
+    const URL: string = `categories/${categoryId}`;
+
+    return new Promise((resolve, reject) => {
+      const response = this.http.get<Category>(URL);
+      response.subscribe((data) => {
+        resolve(data);
+      });
+    });
+  }
+
+  updateCategory(categoryId: string, data: any): Promise<any> {
+    const URL: string = `categories/${categoryId}`;
+
+    return new Promise((resolve, reject) => {
+      const response = this.http.put(URL, data);
+      response.subscribe((data) => {
+        resolve(data);
+      });
+    });
+  }
 }
