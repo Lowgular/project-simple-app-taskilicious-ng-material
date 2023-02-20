@@ -1,0 +1,10 @@
+
+<form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. Test" [formControl]="categoryForm">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
+        [disabled]="!categoryForm.valid">{{buttonAction}}</button>
+</form>
