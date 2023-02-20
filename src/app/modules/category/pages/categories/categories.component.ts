@@ -10,6 +10,7 @@ import { CategoriesService } from "../../services/categories/categories.service"
 export class CategoriesComponent implements OnInit {
   title: string = "Categories";
   categoriesList: Category[] = [];
+  selectedOrder: string = "";
 
   constructor(private categoriesService: CategoriesService) {}
 
@@ -26,5 +27,13 @@ export class CategoriesComponent implements OnInit {
         this.categoriesList = [];
       }
     );
+  }
+
+  sortList() {
+    if (this.selectedOrder === "A-Z") {
+      this.categoriesList.sort((a, b) => (a.name < b.name ? -1 : 1));
+    } else {
+      this.categoriesList.sort((a, b) => (a.name > b.name ? -1 : 1));
+    }
   }
 }

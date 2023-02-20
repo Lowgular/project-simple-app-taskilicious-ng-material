@@ -1,3 +1,10 @@
+<mat-form-field appearance="fill">
+    <mat-label>Choose an option</mat-label>
+    <select matNativeControl required [(ngModel)]="selectedOrder" (change)="sortList()">
+        <option value="A-Z">A-Z</option>
+        <option value="Z-A">Z-A</option>
+    </select>
+</mat-form-field>
 <app-categories-list [categories]="categoriesList"></app-categories-list>
 
 <section>
