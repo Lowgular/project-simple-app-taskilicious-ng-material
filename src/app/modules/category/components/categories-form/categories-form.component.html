@@ -1,1 +1,15 @@
-<p>categories-form works!</p>
+<form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+    <p class="text-warn" *ngIf="errorMessage" color="warn">
+        {{errorMessage}}
+    </p>
+
+    <section>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" [disabled]="!categoryForm.valid">Create</button>
+        </div>
+    </section>
+</form>

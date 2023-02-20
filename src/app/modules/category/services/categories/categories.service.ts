@@ -8,6 +8,22 @@ import { Category } from "../../models/category";
 export class CategoriesService {
   constructor(public http: HttpClient) {}
 
+  createCategory(data: any): Promise<any> {
+    const URL: string = "categories";
+
+    return new Promise((resolve, reject) => {
+      const response = this.http.post(URL, data);
+      response.subscribe(
+        (data) => {
+          resolve(data);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
   getAllCategories(): Promise<Category[]> {
     const URL: string = "categories";
 
