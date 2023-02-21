@@ -21,4 +21,10 @@ export class TaskService extends ApiService<Task> {
   createTask(task: Task): Observable<Task> {
     return this.post(environment.apiEndpoint + Constants.TASKS_ENDPOINT, task);
   }
+
+  deleteTaskById(id: string): Observable<Task> {
+    return this.delete(
+      `${environment.apiEndpoint + Constants.TASKS_ENDPOINT}/` + id
+    );
+  }
 }

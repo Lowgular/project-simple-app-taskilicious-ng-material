@@ -13,11 +13,9 @@ import { Task } from 'src/app/shared/models/task';
 })
 export class CategoryDetailsComponent implements OnInit, OnDestroy {
   sub = new Subscription();
-  tasksSub = new Subscription();
-  categoryName: string = '';
   category: Category | undefined;
   tasks: Task[] = [];
-  displayedColumns: string[] = ['name', 'categoryId'];
+  displayedColumns: string[] = ['name', 'categoryId', 'remove'];
 
   constructor(
     private route: ActivatedRoute,
@@ -34,16 +32,26 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
       )
       .subscribe((res: Category) => {
         this.category = res;
-        this.tasksSub = this.taskService.getTasks().subscribe((tasks) => {
-          this.tasks = tasks.filter(
-            (task: Task) => task.categoryId == Number(res.id)
-          );
-        });
+        this.getTasks();
       });
+  }
+
+  getTasks() {
+    if (!!this.category?.id)
+      this.taskService.getTasks().subscribe((tasks) => {
+        this.tasks = tasks.filter(
+          (task: Task) => task.categoryId == Number(this.category?.id)
+        );
+      });
+  }
+
+  deleteTask(task: any) {
+    this.taskService.deleteTaskById(task.id).subscribe(() => {
+      this.getTasks();
+    });
   }
 
   ngOnDestroy(): void {
     if (!!this.sub) this.sub.unsubscribe();
-    if (!!this.tasksSub) this.tasksSub.unsubscribe();
   }
 }

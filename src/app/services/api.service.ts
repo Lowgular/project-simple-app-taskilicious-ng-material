@@ -23,6 +23,10 @@ export abstract class ApiService<T> {
     return this.httpClient.put<T>(url, body);
   }
 
+  delete(url: string): Observable<T> {
+    return this.httpClient.delete<T>(url);
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
