@@ -10,7 +10,7 @@ import { TasksService } from "../../services/tasks/tasks.service";
 export class TasksTableComponent implements OnInit {
   @Input("categoryId") categoryId: string | undefined;
   tasksList: Task[] = [];
-  displayedColumns: string[] = ["name", "categoryId"];
+  displayedColumns: string[] = ["name", "categoryId", "edit", "remove"];
 
   constructor(private tasksService: TasksService) {}
 
@@ -22,6 +22,17 @@ export class TasksTableComponent implements OnInit {
     this.tasksService.getAllTasks(categoryId).then(
       (data) => {
         this.tasksList = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  removeTask(taskId: string) {
+    this.tasksService.removeTask(taskId).then(
+      (data) => {
+        this.getAllTasks(this.categoryId!);
       },
       (error) => {
         console.log(error);

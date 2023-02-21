@@ -1,2 +1,14 @@
 <h2 *ngIf="categoryData">{{title}} {{categoryData.name}}</h2>
 <app-tasks-table [categoryId]="categoryData!.id" *ngIf="categoryData"></app-tasks-table>
+<section>
+    <div class="example-button-row">
+        <div class="example-flex-container">
+            <div class="example-button-container" *ngIf="categoryData">
+                <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon"
+                    [routerLink]="['/tasks/create']" [queryParams]=" {categoryId: categoryData!.id}">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

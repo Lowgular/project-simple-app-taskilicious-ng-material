@@ -1,0 +1,26 @@
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a Category</mat-label>
+            <select matNativeControl required formControlName="categoryId">
+                <option value="{{item.id}}" *ngFor="let item of categoriesList; let i=index">{{item.name}}</option>
+            </select>
+        </mat-form-field>
+    </p>
+
+    <p class="text-warn" *ngIf="errorMessage" color="warn">
+        {{errorMessage}}
+    </p>
+
+    <section>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" [disabled]="!taskForm.valid">{{buttonTitle}}</button>
+        </div>
+    </section>
+</form>

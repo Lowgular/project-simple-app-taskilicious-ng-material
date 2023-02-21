@@ -14,6 +14,11 @@ const routes: Routes = [
         (m) => m.CategoryModule
       ),
   },
+  {
+    path: "tasks",
+    loadChildren: () =>
+      import("./modules/task/task.module").then((m) => m.TaskModule),
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
