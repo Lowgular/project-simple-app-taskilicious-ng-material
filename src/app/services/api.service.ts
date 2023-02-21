@@ -7,12 +7,20 @@ import { catchError, Observable, throwError } from 'rxjs';
 export abstract class ApiService<T> {
   constructor(protected readonly httpClient: HttpClient) {}
 
+  getOne(url: string): Observable<T> {
+    return this.httpClient.get<T>(url).pipe(catchError(this.handleError));
+  }
+
   get(url: string): Observable<T[]> {
     return this.httpClient.get<T[]>(url).pipe(catchError(this.handleError));
   }
 
   post(url: string, body: any): Observable<T> {
     return this.httpClient.post<T>(url, body);
+  }
+
+  put(url: string, body: any): Observable<T> {
+    return this.httpClient.put<T>(url, body);
   }
 
   private handleError(error: HttpErrorResponse) {

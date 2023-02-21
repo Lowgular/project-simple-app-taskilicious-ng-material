@@ -1,0 +1,8 @@
+<h1>Edit Category</h1>
+<mat-form-field>
+  <mat-label>Name</mat-label>
+  <input matInput placeholder="Name" [formControl]="categoryEdit" />
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="editCategoryHandler()">
+  Submit
+</button>

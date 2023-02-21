@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { CategoryService } from 'src/app/services/category.service';
   templateUrl: './category-create.component.html',
   styleUrls: ['./category-create.component.scss'],
 })
-export class CategoryCreateComponent {
+export class CategoryCreateComponent implements OnDestroy {
+  sub = new Subscription();
   category = new FormControl('categoryName', [Validators.required]);
 
   constructor(
@@ -18,11 +20,15 @@ export class CategoryCreateComponent {
 
   createCategoryHandler() {
     if (!!this.category.value) {
-      this.categoryService
+      this.sub = this.categoryService
         .createCategory({ name: this.category.value })
         .subscribe((res) => {
           this.router.navigate(['/']);
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    if (!!this.sub) this.sub.unsubscribe();
   }
 }

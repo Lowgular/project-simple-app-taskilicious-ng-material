@@ -21,9 +21,22 @@ export class CategoryService extends ApiService<Category> {
     return this.get(`${environment.apiEndpoint}${Constants.CATEGORY_ENDPOINT}`);
   }
 
+  getCategoryById(id: string): Observable<Category> {
+    return this.getOne(
+      `${environment.apiEndpoint + Constants.CATEGORY_ENDPOINT}/` + id
+    );
+  }
+
   createCategory(category: Category): Observable<Category> {
     return this.post(
       environment.apiEndpoint + Constants.CATEGORY_ENDPOINT,
+      category
+    );
+  }
+
+  editCategory(category: Category): Observable<Category> {
+    return this.put(
+      `${environment.apiEndpoint + Constants.CATEGORY_ENDPOINT}/` + category.id,
       category
     );
   }

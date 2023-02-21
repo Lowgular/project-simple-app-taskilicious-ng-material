@@ -1,4 +1,4 @@
 export interface Category {
-  readonly id?: string;
-  readonly name: string;
+  id?: string;
+  name: string;
 }
