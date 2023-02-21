@@ -1,0 +1,11 @@
+.members-container {
+    display: flex;
+    height: 400px;
+    flex-flow: column wrap;
+}
+  
+.members-container > div {
+    width: auto;
+    margin: 4px;
+    text-align: left;
+}
