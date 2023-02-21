@@ -11,6 +11,10 @@ export abstract class ApiService<T> {
     return this.httpClient.get<T[]>(url).pipe(catchError(this.handleError));
   }
 
+  post(url: string, body: any): Observable<T> {
+    return this.httpClient.post<T>(url, body);
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

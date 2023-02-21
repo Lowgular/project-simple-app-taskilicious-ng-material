@@ -18,8 +18,13 @@ export class CategoryService extends ApiService<Category> {
   }
 
   getCategories(): Observable<Category[]> {
-    return this.get(
-      `${environment.apiEndpoint}${Constants.CATEGORY_ENDPOINT}`
+    return this.get(`${environment.apiEndpoint}${Constants.CATEGORY_ENDPOINT}`);
+  }
+
+  createCategory(category: Category): Observable<Category> {
+    return this.post(
+      environment.apiEndpoint + Constants.CATEGORY_ENDPOINT,
+      category
     );
   }
 }
