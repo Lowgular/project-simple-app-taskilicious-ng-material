@@ -1,4 +1,4 @@
-<h1>Welcome to category: {{ categoryName }}</h1>
+<h1>Welcome to category: {{ category?.name }}</h1>
 
 <table mat-table [dataSource]="tasks" class="mat-elevation-z8">
   <ng-container matColumnDef="name">
@@ -13,3 +13,12 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+<button
+  mat-fab
+  color="accent"
+  aria-label="Icon button with an add icon"
+  routerLink="/tasks/create"
+  [state]="{ id: category?.id}"
+>
+  <mat-icon>add</mat-icon>
+</button>

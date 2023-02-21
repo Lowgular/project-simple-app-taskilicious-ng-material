@@ -15,6 +15,7 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
   sub = new Subscription();
   tasksSub = new Subscription();
   categoryName: string = '';
+  category: Category | undefined;
   tasks: Task[] = [];
   displayedColumns: string[] = ['name', 'categoryId'];
 
@@ -32,7 +33,7 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((res: Category) => {
-        this.categoryName = res.name;
+        this.category = res;
         this.tasksSub = this.taskService.getTasks().subscribe((tasks) => {
           this.tasks = tasks.filter(
             (task: Task) => task.categoryId == Number(res.id)

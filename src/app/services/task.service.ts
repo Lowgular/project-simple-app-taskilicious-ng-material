@@ -17,4 +17,8 @@ export class TaskService extends ApiService<Task> {
   getTasks(): Observable<Task[]> {
     return this.get(`${environment.apiEndpoint}${Constants.TASKS_ENDPOINT}`);
   }
+
+  createTask(task: Task): Observable<Task> {
+    return this.post(environment.apiEndpoint + Constants.TASKS_ENDPOINT, task);
+  }
 }

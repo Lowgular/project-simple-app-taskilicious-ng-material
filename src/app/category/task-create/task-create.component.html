@@ -1,0 +1,16 @@
+<h1>Create new Task</h1>
+<form [formGroup]="taskFormGroup" (ngSubmit)="submitHandler()">
+  <mat-form-field class="example-full-width">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-select formControlName="categoryId">
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Create</button>
+</form>
