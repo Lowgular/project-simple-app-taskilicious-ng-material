@@ -3,9 +3,10 @@
   <h2>Choose a category</h2>
   <mat-form-field appearance="fill">
     <mat-label>Choose an option</mat-label>
-    <mat-select [(value)]="selected">
-      <mat-option value="ASC" (click)="filterByPriority(1)">A-Z</mat-option>
-      <mat-option value="DESC" (click)="filterByPriority(-1)">Z-A</mat-option>
+    <mat-select [formControl]="selectedOption">
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{ option }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-list-item
