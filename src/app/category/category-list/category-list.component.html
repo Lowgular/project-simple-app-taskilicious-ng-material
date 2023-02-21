@@ -1,7 +1,10 @@
 <h1>Welcome to Taskilicious</h1>
 <mat-list role="list">
   <h2>Choose a category</h2>
-  <mat-list-item role="listitem" *ngFor="let category of categories"
+  <mat-list-item
+    role="listitem"
+    *ngFor="let category of categories"
+    [routerLink]="['categories', category.id]"
     >{{ category.name }}
     <mat-icon [routerLink]="['categories', 'edit', category.id]"
       >edit</mat-icon
