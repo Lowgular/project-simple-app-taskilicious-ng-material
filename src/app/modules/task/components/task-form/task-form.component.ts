@@ -4,7 +4,9 @@ import { Category } from "src/app/modules/category/models/category";
 import { CategoriesService } from "src/app/modules/category/services/categories/categories.service";
 import { Task } from "../../models/task";
 import { TaskResponse } from "../../models/task-response";
+import { TeamMember } from "../../models/team-member";
 import { TasksService } from "../../services/tasks/tasks.service";
+import { TeamMembersService } from "../../services/team-members/team-members.service";
 
 @Component({
   selector: "app-task-form",
@@ -19,21 +21,25 @@ export class TaskFormComponent implements OnInit {
   @Input("taskData") taskData: Task | undefined;
   @Output() status = new EventEmitter<TaskResponse>();
   categoriesList: Category[] = [];
+  teamMembersList: TeamMember[] = [];
+  selectedTeamMembers: string[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
     private categoriesService: CategoriesService,
-    private tasksService: TasksService
+    private tasksService: TasksService,
+    private teamMembersService: TeamMembersService
   ) {}
 
   ngOnInit(): void {
     this.getCategories();
+    this.getAllTeamMembers();
 
     this.taskForm = this._formBuilder.group({
       name: ["", [Validators.required]],
       categoryId: [this.categoryId, [Validators.required]],
+      teamMemberIds: [""],
     });
-
     if (this.taskData) {
       this.fillForm(this.taskData);
       this.buttonTitle = "Submit";
@@ -47,6 +53,20 @@ export class TaskFormComponent implements OnInit {
       },
       (error) => {
         this.categoriesList = [];
+      }
+    );
+  }
+
+  getAllTeamMembers() {
+    this.teamMembersService.getAllTeamMembers().then(
+      (data) => {
+        this.teamMembersList = data;
+        if (this.taskData) {
+          this.selectTeamMemberEdit();
+        }
+      },
+      (error) => {
+        this.teamMembersList = [];
       }
     );
   }
@@ -68,9 +88,13 @@ export class TaskFormComponent implements OnInit {
         }
       }
     }
+
+    this.selectedTeamMembers = formData.teamMemberIds;
   }
 
   onSubmit() {
+    this.taskForm.get("teamMemberIds")?.setValue(this.selectedTeamMembers);
+
     if (this.taskData) {
       this.updateTask(String(this.taskData.id));
     } else {
@@ -108,5 +132,25 @@ export class TaskFormComponent implements OnInit {
         this.errorMessage = error.error;
       }
     );
+  }
+
+  selectTeamMember(index: number) {
+    this.teamMembersList[index].checked = !this.teamMembersList[index].checked;
+    this.selectedTeamMembers = [];
+    this.teamMembersList.forEach((element) => {
+      if (element.checked) {
+        this.selectedTeamMembers.push(element.id);
+      }
+    });
+  }
+
+  selectTeamMemberEdit() {
+    this.selectedTeamMembers.forEach((memberId) => {
+      this.teamMembersList.map((element) => {
+        if (element.id === memberId) {
+          element.checked = true;
+        }
+      });
+    });
   }
 }

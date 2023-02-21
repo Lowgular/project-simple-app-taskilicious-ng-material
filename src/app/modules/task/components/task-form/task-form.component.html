@@ -14,13 +14,22 @@
         </mat-form-field>
     </p>
 
+    <mat-label>Choose a Team Members</mat-label>
+    <div *ngFor="let item of teamMembersList; let i=index">
+        <mat-checkbox class="example-margin" [checked]="item.checked" (change)="selectTeamMember(i)">
+            <img [src]="item.avatar" alt="{{item.name}}" class="checkbox-avatar">
+            {{item.name}}
+        </mat-checkbox>
+    </div>
+
     <p class="text-warn" *ngIf="errorMessage" color="warn">
         {{errorMessage}}
     </p>
 
     <section>
         <div class="example-button-row">
-            <button mat-raised-button color="primary" [disabled]="!taskForm.valid">{{buttonTitle}}</button>
+            <button mat-raised-button color="primary"
+                [disabled]="!taskForm.valid || selectedTeamMembers.length === 0">{{buttonTitle}}</button>
         </div>
     </section>
 </form>
