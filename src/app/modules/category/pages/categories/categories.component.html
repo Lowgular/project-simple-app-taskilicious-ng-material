@@ -1,0 +1,21 @@
+<mat-form-field appearance="fill">
+    <mat-label>Choose an option</mat-label>
+    <select matNativeControl required [(ngModel)]="selectedOrder" (change)="sortList()">
+        <option value="A-Z">A-Z</option>
+        <option value="Z-A">Z-A</option>
+    </select>
+</mat-form-field>
+<app-categories-list [categories]="categoriesList"></app-categories-list>
+
+<section>
+    <div class="example-button-row">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon"
+                    [routerLink]="['create']">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

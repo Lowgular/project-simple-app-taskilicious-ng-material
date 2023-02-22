@@ -40,3 +40,23 @@ html, body {
 body {
   margin: 0;
 }
+
+.checkbox-avatar {
+  height: 24px;
+  width: 24px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.table-avatar {
+  float: left;
+  height: 24px;
+  margin-left: 5px;
+  width: 24px;
+}
+
+.text-warn {
+  color: #f44336;
+}

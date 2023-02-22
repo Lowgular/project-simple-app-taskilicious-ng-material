@@ -1,0 +1,43 @@
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a Category</mat-label>
+            <select matNativeControl required formControlName="categoryId">
+                <option value="{{item.id}}" *ngFor="let item of categoriesList; let i=index">{{item.name}}</option>
+            </select>
+        </mat-form-field>
+    </p>
+
+    <mat-label>Choose a Team Members</mat-label>
+    <div class="members-container">
+        <div *ngFor="let item of teamMembersList; let i=index">
+            <mat-checkbox class="example-margin" [checked]="item.checked" (change)="selectTeamMember(i)">
+                <img [src]="item.avatar" alt="{{item.name}}" class="checkbox-avatar">
+                {{item.name}}
+            </mat-checkbox>
+        </div>
+    </div>
+
+    <section>
+        <p>Image</p>
+        <img [src]="taskData?.imageUrl" alt="image" *ngIf="taskData?.imageUrl" class="task-img">
+        <input type="file" name="file" class="input-hidden" formControlName="file" (change)="onFileSelected($event)">
+    </section>
+
+    <p class="text-warn" *ngIf="errorMessage" color="warn">
+        {{errorMessage}}
+    </p>
+
+    <section>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary"
+                [disabled]="!taskForm.valid || selectedTeamMembers.length === 0">{{buttonTitle}}</button>
+        </div>
+    </section>
+</form>
