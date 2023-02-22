@@ -1,0 +1,28 @@
+ul {
+    height: 70vh;
+    width: 20vw;
+    line-height: 2.5em;
+    overflow: scroll;
+    border: 2px solid #40679c;
+    border-radius: 5px;
+}
+
+a {
+    color: black;
+    cursor: pointer;
+}
+
+.category {
+    text-decoration: none;
+}
+
+.editIcon {
+    font-size: 1.2em;
+}
+
+li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

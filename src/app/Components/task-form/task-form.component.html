@@ -1,0 +1,42 @@
+{{ taskForm.value | json }}
+
+<form [formGroup]="taskForm">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="taskName" placeholder="Ex. Test" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Choose a category</mat-label>
+    <mat-select formControlName="category">
+      <mat-option *ngFor="let item of categories" [value]="item.id">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h3>Choose Team Members:</h3>
+  <mat-checkbox-group formArrayName="teamMem">
+    <ng-container *ngFor="let member of teamMembers; let i = index">
+      <mat-checkbox
+        [checked]="checkedItems[i]"
+        [value]="member.id"
+        (change)="onCheckboxChange($event, i)"
+      >
+        <img [src]="member.avatar" />
+      </mat-checkbox>
+    </ng-container>
+  </mat-checkbox-group>
+
+  <input type="file" accept="image/*" formControlName="image" (change)="onFileSelected($event)">
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!taskForm.valid"
+    (click)="onSubmit()"
+  >
+    {{ buttonAction }}
+  </button>
+</form>
