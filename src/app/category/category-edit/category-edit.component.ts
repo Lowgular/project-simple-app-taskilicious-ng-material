@@ -35,7 +35,7 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  editCategoryHandler() {
+  submitHandler() {
     this.editSub = this.categoryService
       .editCategory({
         id: this.category?.id,
