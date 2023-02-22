@@ -24,6 +24,12 @@
         </div>
     </div>
 
+    <section>
+        <p>Image</p>
+        <img [src]="taskData?.imageUrl" alt="image" *ngIf="taskData?.imageUrl" class="task-img">
+        <input type="file" name="file" class="input-hidden" formControlName="file" (change)="onFileSelected($event)">
+    </section>
+
     <p class="text-warn" *ngIf="errorMessage" color="warn">
         {{errorMessage}}
     </p>

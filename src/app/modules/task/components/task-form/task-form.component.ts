@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "src/app/modules/category/models/category";
 import { CategoriesService } from "src/app/modules/category/services/categories/categories.service";
+import { environment } from "src/environments/environment";
 import { Task } from "../../models/task";
 import { TaskResponse } from "../../models/task-response";
 import { TeamMember } from "../../models/team-member";
@@ -23,6 +24,8 @@ export class TaskFormComponent implements OnInit {
   categoriesList: Category[] = [];
   teamMembersList: TeamMember[] = [];
   selectedTeamMembers: string[] = [];
+  selectedFile: File | null = null;
+  fileName: string = "";
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -39,6 +42,8 @@ export class TaskFormComponent implements OnInit {
       name: ["", [Validators.required]],
       categoryId: [this.categoryId, [Validators.required]],
       teamMemberIds: [""],
+      file: [""],
+      imageUrl: [""],
     });
     if (this.taskData) {
       this.fillForm(this.taskData);
@@ -95,6 +100,16 @@ export class TaskFormComponent implements OnInit {
   onSubmit() {
     this.taskForm.get("teamMemberIds")?.setValue(this.selectedTeamMembers);
 
+    if (this.selectedFile) {
+      let data = new FormData();
+      data.append("file0", this.selectedFile, this.selectedFile.name);
+      this.uploadTaskImage(data);
+    } else {
+      this.sendData();
+    }
+  }
+
+  sendData() {
     if (this.taskData) {
       this.updateTask(String(this.taskData.id));
     } else {
@@ -152,5 +167,25 @@ export class TaskFormComponent implements OnInit {
         }
       });
     });
+  }
+
+  uploadTaskImage(file: any) {
+    this.errorMessage = null;
+
+    this.tasksService.uploadTaskImage(file).then(
+      (data) => {
+        const imageUrl: string = environment.IMGS_URL + data.file0 + "/";
+        this.taskForm.get("imageUrl")?.setValue(imageUrl);
+        this.sendData();
+      },
+      (error) => {
+        this.errorMessage = error.error;
+      }
+    );
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = <File>event.target.files[0];
+    this.fileName = this.selectedFile.name;
   }
 }

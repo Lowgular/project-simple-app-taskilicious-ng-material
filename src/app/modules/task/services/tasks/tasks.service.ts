@@ -1,12 +1,17 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpBackend } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 import { Task } from "../../models/task";
 
 @Injectable({
   providedIn: "root",
 })
 export class TasksService {
-  constructor(public http: HttpClient) {}
+  httpBackend: HttpClient;
+
+  constructor(public http: HttpClient, public handler: HttpBackend) {
+    this.httpBackend = new HttpClient(handler);
+  }
 
   createTask(data: any): Promise<any> {
     const URL: string = "tasks";
@@ -68,6 +73,23 @@ export class TasksService {
       response.subscribe((data) => {
         resolve(data);
       });
+    });
+  }
+
+  uploadTaskImage(data: FormData): Promise<any> {
+    data.append("UPLOADCARE_PUB_KEY", environment.UPLOADCARE_PUB_KEY);
+    const URL: string = environment.UPLOAD_URL;
+
+    return new Promise((resolve, reject) => {
+      const response = this.httpBackend.post(URL, data);
+      response.subscribe(
+        (data) => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
     });
   }
 }

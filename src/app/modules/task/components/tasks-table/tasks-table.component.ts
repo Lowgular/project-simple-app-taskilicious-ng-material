@@ -13,6 +13,7 @@ export class TasksTableComponent implements OnInit {
   @Input("categoryId") categoryId: string | undefined;
   tasksList: Task[] = [];
   displayedColumns: string[] = [
+    "image",
     "name",
     "categoryId",
     "teamMembers",
