@@ -18,8 +18,21 @@ export class TaskService extends ApiService<Task> {
     return this.get(`${environment.apiEndpoint}${Constants.TASKS_ENDPOINT}`);
   }
 
+  getTaskById(id: string): Observable<Task> {
+    return this.getOne(
+      `${environment.apiEndpoint + Constants.TASKS_ENDPOINT}/` + id
+    );
+  }
+
   createTask(task: Task): Observable<Task> {
     return this.post(environment.apiEndpoint + Constants.TASKS_ENDPOINT, task);
+  }
+
+  editTask(task: Task): Observable<Task> {
+    return this.put(
+      `${environment.apiEndpoint + Constants.TASKS_ENDPOINT}/` + task.id,
+      task
+    );
   }
 
   deleteTaskById(id: string): Observable<Task> {

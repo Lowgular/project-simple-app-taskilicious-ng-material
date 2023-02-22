@@ -8,7 +8,6 @@ import { CategoryCreateComponent } from './category-create/category-create.compo
 import { CategoryEditComponent } from './category-edit/category-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryDetailsComponent } from './category-details/category-details.component';
-import { TaskCreateComponent } from './task-create/task-create.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +15,6 @@ import { TaskCreateComponent } from './task-create/task-create.component';
     CategoryCreateComponent,
     CategoryEditComponent,
     CategoryDetailsComponent,
-    TaskCreateComponent,
   ],
   imports: [
     CommonModule,

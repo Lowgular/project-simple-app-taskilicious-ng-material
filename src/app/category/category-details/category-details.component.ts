@@ -15,7 +15,7 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
   sub = new Subscription();
   category: Category | undefined;
   tasks: Task[] = [];
-  displayedColumns: string[] = ['name', 'categoryId', 'remove'];
+  displayedColumns: string[] = ['name', 'categoryId', 'edit', 'remove'];
 
   constructor(
     private route: ActivatedRoute,

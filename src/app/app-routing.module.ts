@@ -7,6 +7,16 @@ const routes: Routes = [
     loadChildren: () =>
       import('src/app/category/category.module').then((m) => m.CategoryModule),
   },
+  {
+    path: 'categories',
+    loadChildren: () =>
+      import('src/app/category/category.module').then((m) => m.CategoryModule),
+  },
+  {
+    path: 'tasks',
+    loadChildren: () =>
+      import('src/app/task/task.module').then((m) => m.TaskModule),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
