@@ -28,6 +28,8 @@
     </ng-container>
   </mat-checkbox-group>
 
+  <input type="file" accept="image/*" formControlName="image" (change)="onFileSelected($event)">
+
   <button
     mat-raised-button
     color="primary"
