@@ -3,8 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.service';
 import { TaskService } from 'src/app/services/task.service';
+import { TeamMemberService } from 'src/app/services/team-member.service';
 import { Category } from 'src/app/shared/models/category';
 import { Task } from 'src/app/shared/models/task';
+import { TeamMember } from 'src/app/shared/models/team-member';
 
 @Component({
   selector: 'app-category-details',
@@ -13,14 +15,23 @@ import { Task } from 'src/app/shared/models/task';
 })
 export class CategoryDetailsComponent implements OnInit, OnDestroy {
   sub = new Subscription();
+  memberSub = new Subscription();
   category: Category | undefined;
   tasks: Task[] = [];
-  displayedColumns: string[] = ['name', 'categoryId', 'edit', 'remove'];
+  displayedColumns: string[] = [
+    'name',
+    'categoryId',
+    'teamMembers',
+    'edit',
+    'remove',
+  ];
+  teamMembers: TeamMember[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private categoryService: CategoryService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private teamMemberService: TeamMemberService
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +53,23 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
         this.tasks = tasks.filter(
           (task: Task) => task.categoryId == Number(this.category?.id)
         );
+        this.getTeamMembers();
       });
+  }
+
+  getTeamMembers() {
+    this.memberSub = this.teamMemberService
+      .getTeamMembers()
+      .subscribe((teamMember: TeamMember[]) => {
+        this.teamMembers = teamMember;
+      });
+  }
+
+  getTeamMemberImage(memberId: string): string {
+    const teamMember = this.teamMembers.find(
+      (member) => member.id === memberId
+    );
+    return teamMember ? teamMember.avatar : '';
   }
 
   deleteTask(task: any) {
@@ -53,5 +80,6 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (!!this.sub) this.sub.unsubscribe();
+    if (!!this.memberSub) this.memberSub.unsubscribe();
   }
 }

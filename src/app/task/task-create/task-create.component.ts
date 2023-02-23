@@ -20,7 +20,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   taskFormGroup = new FormGroup({
     name: new FormControl('New Task', [Validators.required]),
     categoryId: new FormControl(''),
-    teamMembersIds: new FormArray([]),
+    teamMemberIds: new FormArray([]),
   });
   teamMembers: TeamMember[] = [];
 
@@ -49,8 +49,8 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
 
     this.memberSub = this.teamMemberService
       .getTeamMembers()
-      .subscribe((teamMembers: TeamMember[]) => {
-        (this.teamMembers = teamMembers),
+      .subscribe((teamMember: TeamMember[]) => {
+        (this.teamMembers = teamMember),
           this.addCheckboxesToForm();
       });
   }
@@ -58,20 +58,20 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   submitHandler() {
     let categoryId = this.taskFormGroup.controls['categoryId'].value;
     let name = this.taskFormGroup.controls['name'].value;
-    let teamMembersIds: any[] = this.taskFormGroup.controls[
-      'teamMembersIds'
+    let teamMemberIds: any[] = this.taskFormGroup.controls[
+      'teamMemberIds'
     ].value
       .map((teamMemberIds, i) =>
         teamMemberIds === true ? (i + 1).toString() : null
       )
       .filter((i) => i !== null);
 
-    if (categoryId && name && teamMembersIds) {
+    if (categoryId && name && teamMemberIds) {
       this.taskService
         .createTask({
           name,
           categoryId: Number(categoryId),
-          teamMembersIds,
+          teamMemberIds,
         })
         .subscribe((res) =>
           this.router.navigate(['/', 'categories', categoryId])
@@ -79,24 +79,24 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  get teamMembersControls() {
-    return this.taskFormGroup.get('teamMembersIds') as FormArray;
+  get teamMemberControls() {
+    return this.taskFormGroup.get('teamMemberIds') as FormArray;
   }
 
   private addCheckboxesToForm() {
     this.teamMembers.forEach(() =>
-      this.teamMembersControls.push(new FormControl(false))
+      this.teamMemberControls.push(new FormControl(false))
     );
   }
 
   addTeamMemeber(id: string) {
-    let teamMember: string[] = this.teamMembersControls.value;
+    let teamMember: string[] = this.teamMemberControls.value;
     if (teamMember && teamMember.includes(id)) {
-      this.taskFormGroup.controls['teamMembersIds'].removeAt(
+      this.taskFormGroup.controls['teamMemberIds'].removeAt(
         teamMember.indexOf(id)
       );
     } else {
-      this.teamMembersControls.push(new FormControl(id));
+      this.teamMemberControls.push(new FormControl(id));
     }
   }
 
