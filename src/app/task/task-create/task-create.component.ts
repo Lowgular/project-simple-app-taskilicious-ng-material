@@ -50,9 +50,29 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     this.memberSub = this.teamMemberService
       .getTeamMembers()
       .subscribe((teamMember: TeamMember[]) => {
-        (this.teamMembers = teamMember),
-          this.addCheckboxesToForm();
+        (this.teamMembers = teamMember), this.addCheckboxesToForm();
       });
+  }
+
+  get teamMemberControls() {
+    return this.taskFormGroup.get('teamMemberIds') as FormArray;
+  }
+
+  private addCheckboxesToForm() {
+    this.teamMembers.forEach(() =>
+      this.teamMemberControls.push(new FormControl(false))
+    );
+  }
+
+  addTeamMemeber(id: string) {
+    let teamMember: string[] = this.teamMemberControls.value;
+    if (teamMember && teamMember.includes(id)) {
+      this.taskFormGroup.controls['teamMemberIds'].removeAt(
+        teamMember.indexOf(id)
+      );
+    } else {
+      this.teamMemberControls.push(new FormControl(id));
+    }
   }
 
   submitHandler() {
@@ -76,27 +96,6 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
         .subscribe((res) =>
           this.router.navigate(['/', 'categories', categoryId])
         );
-    }
-  }
-
-  get teamMemberControls() {
-    return this.taskFormGroup.get('teamMemberIds') as FormArray;
-  }
-
-  private addCheckboxesToForm() {
-    this.teamMembers.forEach(() =>
-      this.teamMemberControls.push(new FormControl(false))
-    );
-  }
-
-  addTeamMemeber(id: string) {
-    let teamMember: string[] = this.teamMemberControls.value;
-    if (teamMember && teamMember.includes(id)) {
-      this.taskFormGroup.controls['teamMemberIds'].removeAt(
-        teamMember.indexOf(id)
-      );
-    } else {
-      this.teamMemberControls.push(new FormControl(id));
     }
   }
 

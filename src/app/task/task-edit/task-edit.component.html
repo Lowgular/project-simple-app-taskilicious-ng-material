@@ -12,5 +12,16 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <div
+    formArrayName="teamMemberIds"
+    *ngFor="let teamMember of teamMembers; let i = index"
+  >
+    <mat-checkbox [formControlName]="i">
+      <img [src]="teamMembers[i].avatar" [alt]="teamMembers[i].name" />
+      {{ teamMembers[i].name }}
+    </mat-checkbox>
+  </div>
+
   <button mat-raised-button color="primary" type="submit">Update</button>
 </form>
