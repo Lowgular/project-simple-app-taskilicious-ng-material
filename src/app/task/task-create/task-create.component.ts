@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/shared/models/category';
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { TaskService } from 'src/app/services/task.service';
 import { TeamMemberService } from 'src/app/services/team-member.service';
 import { TeamMember } from 'src/app/shared/models/team-member';
+import { UploadService } from 'src/app/services/upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-task-create',
@@ -21,13 +23,17 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     name: new FormControl('New Task', [Validators.required]),
     categoryId: new FormControl(''),
     teamMemberIds: new FormArray([]),
+    imageUrl: new FormControl(''),
   });
   teamMembers: TeamMember[] = [];
+  imagePreview: string | undefined;
+  fileToUpload: File | undefined;
 
   constructor(
     private categoryService: CategoryService,
     private taskService: TaskService,
     private teamMemberService: TeamMemberService,
+    private uploadService: UploadService,
     private router: Router
   ) {
     if (this.router.getCurrentNavigation()?.extras.state?.['id'])
@@ -75,7 +81,19 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitHandler() {
+  async submitHandler() {
+    if (this.fileToUpload) {
+      const formData = new FormData();
+      formData.append('UPLOADCARE_PUB_KEY', environment.imageApiPublicKey);
+      formData.append('filename', this.fileToUpload);
+      const uuid = (
+        await lastValueFrom(this.uploadService.uploadImage(formData))
+      ).filename;
+      this.taskFormGroup.patchValue({
+        imageUrl: uuid,
+      });
+    }
+
     let categoryId = this.taskFormGroup.controls['categoryId'].value;
     let name = this.taskFormGroup.controls['name'].value;
     let teamMemberIds: any[] = this.taskFormGroup.controls[
@@ -86,16 +104,41 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
       )
       .filter((i) => i !== null);
 
+    let imageUrl =
+      this.taskFormGroup.controls['imageUrl'].value !== ''
+        ? this.taskFormGroup.controls['imageUrl'].value
+        : undefined;
+
     if (categoryId && name && teamMemberIds) {
       this.taskService
         .createTask({
           name,
           categoryId: Number(categoryId),
           teamMemberIds,
+          imageUrl: imageUrl
+            ? 'https://ucarecdn.com/' + imageUrl + '/'
+            : undefined,
         })
         .subscribe((res) =>
           this.router.navigate(['/', 'categories', categoryId])
         );
+    }
+  }
+
+  handleImageInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      if (file) {
+        this.fileToUpload = file;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.imagePreview = reader.result as string;
+        };
+      }
+    } else {
+      input.value = '';
     }
   }
 

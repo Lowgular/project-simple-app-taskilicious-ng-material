@@ -3,4 +3,5 @@ export interface Task {
   id?: number;
   categoryId: number;
   teamMemberIds?: string[];
+  imageUrl?: string;
 }

@@ -21,9 +21,23 @@
     "
   >
     <mat-checkbox [formControlName]="i">
-      <img [src]="teamMembers[i].avatar" [alt]="teamMembers[i].name" />
+      <img
+        [src]="teamMembers[i].avatar"
+        [alt]="teamMembers[i].name"
+        loading="lazy"
+      />
       {{ teamMembers[i].name }}
     </mat-checkbox>
   </div>
+
+  <img *ngIf="imagePreview" [src]="imagePreview" alt="Image preview" />
+
+  <input
+    type="file"
+    name="fileToUpload"
+    accept="image/*"
+    (change)="handleImageInput($event)"
+  />
+
   <button mat-raised-button color="primary" type="submit">Create</button>
 </form>
