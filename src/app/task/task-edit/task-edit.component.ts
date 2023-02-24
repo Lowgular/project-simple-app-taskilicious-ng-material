@@ -1,13 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription, lastValueFrom, switchMap } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.service';
 import { TaskService } from 'src/app/services/task.service';
 import { TeamMemberService } from 'src/app/services/team-member.service';
+import { UploadService } from 'src/app/services/upload.service';
 import { Category } from 'src/app/shared/models/category';
 import { Task } from 'src/app/shared/models/task';
 import { TeamMember } from 'src/app/shared/models/team-member';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-task-edit',
@@ -24,15 +26,19 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     name: new FormControl('', [Validators.required]),
     categoryId: new FormControl(''),
     teamMemberIds: new FormArray([]),
+    imageUrl: new FormControl(''),
   });
   teamMembers: TeamMember[] = [];
+  imagePreview: string | undefined;
+  fileToUpload: File | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private categoryService: CategoryService,
     private taskService: TaskService,
-    private teamMemberService: TeamMemberService
+    private teamMemberService: TeamMemberService,
+    private uploadService: UploadService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +54,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         this.taskFormGroup.patchValue({
           name: res.name,
           categoryId: res.categoryId.toString(),
+          imageUrl: res.imageUrl,
         });
       });
 
@@ -97,7 +104,19 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitHandler() {
+  async submitHandler() {
+    if (this.fileToUpload) {
+      const formData = new FormData();
+      formData.append('UPLOADCARE_PUB_KEY', environment.imageApiPublicKey);
+      formData.append('filename', this.fileToUpload);
+      const uuid = (
+        await lastValueFrom(this.uploadService.uploadImage(formData))
+      ).filename;
+      this.taskFormGroup.patchValue({
+        imageUrl: uuid,
+      });
+    }
+
     let categoryId = this.taskFormGroup.controls['categoryId'].value;
     let name = this.taskFormGroup.controls['name'].value;
     let teamMemberIds: any[] = this.taskFormGroup.controls[
@@ -108,17 +127,42 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       )
       .filter((i) => i !== null);
 
-    if (categoryId && name) {
+    let imageUrl =
+      this.taskFormGroup.controls['imageUrl'].value !== ''
+        ? this.taskFormGroup.controls['imageUrl'].value
+        : undefined;
+
+    if (categoryId && name && teamMemberIds) {
       this.taskService
         .editTask({
-          name: name,
+          name,
           categoryId: Number(categoryId),
-          id: this.task?.id,
           teamMemberIds,
+          id: this.task?.id,
+          imageUrl: imageUrl
+            ? 'https://ucarecdn.com/' + imageUrl + '/'
+            : undefined,
         })
         .subscribe((res) =>
           this.router.navigate(['/', 'categories', categoryId])
         );
+    }
+  }
+
+  handleImageInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      if (file) {
+        this.fileToUpload = file;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.imagePreview = reader.result as string;
+        };
+      }
+    } else {
+      input.value = '';
     }
   }
 

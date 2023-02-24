@@ -18,10 +18,27 @@
     *ngFor="let teamMember of teamMembers; let i = index"
   >
     <mat-checkbox [formControlName]="i">
-      <img [src]="teamMembers[i].avatar" [alt]="teamMembers[i].name" />
+      <img
+        [src]="teamMembers[i].avatar"
+        [alt]="teamMembers[i].name"
+        loading="lazy"
+      />
       {{ teamMembers[i].name }}
     </mat-checkbox>
   </div>
+
+  <img *ngIf="imagePreview" [src]="imagePreview" alt="Image preview" />
+
+  <span *ngIf="taskFormGroup.value.imageUrl && !imagePreview">
+    <img src="{{ taskFormGroup.value.imageUrl }}" loading="lazy" />
+  </span>
+
+  <input
+    type="file"
+    name="fileToUpload"
+    accept="image/*"
+    (change)="handleImageInput($event)"
+  />
 
   <button mat-raised-button color="primary" type="submit">Update</button>
 </form>
