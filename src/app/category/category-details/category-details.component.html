@@ -5,7 +5,13 @@
     <th mat-header-cell *matHeaderCellDef>Image</th>
     <td mat-cell *matCellDef="let element">
       <p *ngIf="!element.imageUrl">No Task Image</p>
-      <img *ngIf="element.imageUrl" [src]="element.imageUrl" alt="Task Image" />
+      <img
+        *ngIf="element.imageUrl"
+        [src]="
+          element.imageUrl + '-/resize/x128/-/quality/smart/-/format/auto/'
+        "
+        alt="Task Image"
+      />
     </td>
   </ng-container>
   <ng-container matColumnDef="name">

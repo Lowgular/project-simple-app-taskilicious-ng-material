@@ -30,7 +30,12 @@
   <img *ngIf="imagePreview" [src]="imagePreview" alt="Image preview" />
 
   <span *ngIf="taskFormGroup.value.imageUrl && !imagePreview">
-    <img src="{{ taskFormGroup.value.imageUrl }}" loading="lazy" />
+    <img
+      src="{{
+        taskFormGroup.value.imageUrl
+      }}-/resize/x128/-/quality/smart/-/format/auto/"
+      loading="lazy"
+    />
   </span>
 
   <input
