@@ -19,6 +19,7 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
   category: Category | undefined;
   tasks: Task[] = [];
   displayedColumns: string[] = [
+    'image',
     'name',
     'categoryId',
     'teamMembers',
