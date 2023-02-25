@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TaskCreateComponent } from './task-create/task-create.component';
-import { TaskEditComponent } from './task-edit/task-edit.component';
+import { TaskEditComponent } from './task/task.component';
 
 const routes: Routes = [
-  { path: 'create', component: TaskCreateComponent },
+  { path: 'create', component: TaskEditComponent },
   { path: 'edit/:id', component: TaskEditComponent },
 ];
 

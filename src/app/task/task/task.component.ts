@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, lastValueFrom, switchMap } from 'rxjs';
+import { Subscription, lastValueFrom } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.service';
 import { TaskService } from 'src/app/services/task.service';
 import { TeamMemberService } from 'src/app/services/team-member.service';
@@ -13,13 +13,12 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-task-edit',
-  templateUrl: './task-edit.component.html',
-  styleUrls: ['./task-edit.component.scss'],
+  templateUrl: './task.component.html',
+  styleUrls: ['./task.component.scss'],
 })
 export class TaskEditComponent implements OnInit, OnDestroy {
   sub = new Subscription();
   catSub = new Subscription();
-  memberSub = new Subscription();
   categories: Category[] = [];
   task: Task | undefined;
   taskFormGroup = new FormGroup({
@@ -29,8 +28,10 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     imageUrl: new FormControl(''),
   });
   teamMembers: TeamMember[] = [];
+  taskId: string | null = null;
   imagePreview: string | undefined;
   fileToUpload: File | undefined;
+  type: string = 'Create';
 
   constructor(
     private route: ActivatedRoute,
@@ -39,25 +40,50 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private teamMemberService: TeamMemberService,
     private uploadService: UploadService
-  ) {}
+  ) {
+    if (this.router.getCurrentNavigation()?.extras.state?.['id'])
+      localStorage.setItem(
+        'categoryId',
+        this.router.getCurrentNavigation()?.extras.state?.['id']
+      );
+  }
 
-  ngOnInit(): void {
-    this.sub = this.route.params
-      .pipe(
-        switchMap((res: any) => {
-          return this.taskService.getTaskById(res.id);
-        })
-      )
-      .subscribe((res: Task) => {
-        this.task = res;
-        this.getTeamMembers();
-        this.taskFormGroup.patchValue({
-          name: res.name,
-          categoryId: res.categoryId.toString(),
-          imageUrl: res.imageUrl,
-        });
+  async ngOnInit(): Promise<void> {
+    this.getCategories();
+    this.teamMembers = await lastValueFrom(
+      this.teamMemberService.getTeamMembers()
+    );
+
+    this.taskId = this.route.snapshot.params['id'];
+    if (this.taskId) {
+      this.getTaskById(this.taskId);
+      this.type = 'Update';
+    } else {
+      this.type = 'Create';
+      this.taskFormGroup.patchValue({
+        name: 'New Task',
       });
+      this.taskFormGroup.controls['categoryId'].setValue(
+        localStorage.getItem('categoryId')
+      );
+      this.addCheckboxesToForm();
+    }
+  }
 
+  async getTaskById(taskId: string) {
+    const response = await lastValueFrom(this.taskService.getTaskById(taskId));
+    if (response) {
+      this.task = response;
+      this.taskFormGroup.patchValue({
+        name: response.name,
+        categoryId: response.categoryId.toString(),
+        imageUrl: response.imageUrl,
+      });
+      this.addCheckboxesToForm();
+    }
+  }
+
+  getCategories() {
     this.catSub = this.categoryService
       .getCategories()
       .subscribe((categories) => {
@@ -67,17 +93,14 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  getTeamMembers() {
-    this.memberSub = this.teamMemberService
-      .getTeamMembers()
-      .subscribe((teamMember: TeamMember[]) => {
-        (this.teamMembers = teamMember), this.addCheckboxesToForm();
-      });
+  get teamMemberControls() {
+    return this.taskFormGroup.get('teamMemberIds') as FormArray;
   }
 
   private addCheckboxesToForm() {
     this.teamMembers.forEach((teamMember) => {
       if (
+        this.task &&
         this.task?.teamMemberIds?.some(
           (teamMemberId) => teamMemberId === teamMember.id
         )
@@ -87,10 +110,6 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         this.teamMemberControls.push(new FormControl(false));
       }
     });
-  }
-
-  get teamMemberControls() {
-    return this.taskFormGroup.get('teamMemberIds') as FormArray;
   }
 
   addTeamMemeber(id: string) {
@@ -127,25 +146,41 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       )
       .filter((i) => i !== null);
 
+    
     let imageUrl =
       this.taskFormGroup.controls['imageUrl'].value !== ''
         ? this.taskFormGroup.controls['imageUrl'].value
         : undefined;
 
     if (categoryId && name && teamMemberIds) {
-      this.taskService
-        .editTask({
-          name,
-          categoryId: Number(categoryId),
-          teamMemberIds,
-          id: this.task?.id,
-          imageUrl: imageUrl
-            ? 'https://ucarecdn.com/' + imageUrl + '/'
-            : undefined,
-        })
-        .subscribe((res) =>
-          this.router.navigate(['/', 'categories', categoryId])
-        );
+      if (this.type === 'Create') {
+        this.taskService
+          .createTask({
+            name,
+            categoryId: Number(categoryId),
+            teamMemberIds,
+            imageUrl: imageUrl
+              ? 'https://ucarecdn.com/' + imageUrl + '/'
+              : undefined,
+          })
+          .subscribe((res) =>
+            this.router.navigate(['/', 'categories', categoryId])
+          );
+      } else {
+        this.taskService
+          .editTask({
+            name,
+            categoryId: Number(categoryId),
+            teamMemberIds,
+            id: this.task?.id,
+            imageUrl: imageUrl
+              ? 'https://ucarecdn.com/' + imageUrl + '/'
+              : undefined,
+          })
+          .subscribe((res) =>
+            this.router.navigate(['/', 'categories', categoryId])
+          );
+      }
     }
   }
 
@@ -169,6 +204,5 @@ export class TaskEditComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (!!this.sub) this.sub.unsubscribe();
     if (!!this.catSub) this.catSub.unsubscribe();
-    if (!!this.memberSub) this.memberSub.unsubscribe();
   }
 }
