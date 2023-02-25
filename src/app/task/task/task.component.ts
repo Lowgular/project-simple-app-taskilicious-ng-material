@@ -146,10 +146,13 @@ export class TaskEditComponent implements OnInit, OnDestroy {
       )
       .filter((i) => i !== null);
 
-    
     let imageUrl =
       this.taskFormGroup.controls['imageUrl'].value !== ''
-        ? this.taskFormGroup.controls['imageUrl'].value
+        ? this.taskFormGroup.controls['imageUrl'].value?.startsWith(
+            'https://ucarecdn.com/'
+          )
+          ? this.taskFormGroup.controls['imageUrl'].value.slice(21, 57)
+          : this.taskFormGroup.controls['imageUrl'].value
         : undefined;
 
     if (categoryId && name && teamMemberIds) {
