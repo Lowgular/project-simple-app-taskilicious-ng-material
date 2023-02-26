@@ -1,0 +1,77 @@
+<h1>Welcome to category: {{ category?.name }}</h1>
+
+<table mat-table [dataSource]="tasks" class="mat-elevation-z8">
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef>Image</th>
+    <td mat-cell *matCellDef="let element">
+      <p *ngIf="!element.imageUrl">No Task Image</p>
+      <img
+        *ngIf="element.imageUrl"
+        [src]="
+          element.imageUrl + '-/resize/x128/-/quality/smart/-/format/auto/'
+        "
+        alt="Task Image"
+      />
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="categoryId">
+    <th mat-header-cell *matHeaderCellDef>Category Id</th>
+    <td mat-cell *matCellDef="let element">{{ element.categoryId }}</td>
+  </ng-container>
+  <ng-container matColumnDef="teamMembers">
+    <th mat-header-cell *matHeaderCellDef>Team Members</th>
+    <td mat-cell *matCellDef="let element">
+      <p *ngIf="element && element.teamMemberIds.length === 0">
+        No Assigned Team Members
+      </p>
+      <div
+        *ngFor="let teamMemberId of element.teamMemberIds"
+        class="teamMembers-list"
+      >
+        <img [src]="getTeamMemberImage(teamMemberId)" alt="Team Member Image" />
+      </div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="edit">
+    <th mat-header-cell *matHeaderCellDef>Edit</th>
+    <td mat-cell *matCellDef="let element">
+      <button
+        mat-mini-fab
+        color="accent"
+        aria-label="Edit Task"
+        [routerLink]="['/', 'tasks', 'edit', element.id]"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="remove">
+    <th mat-header-cell *matHeaderCellDef>Remove</th>
+    <td mat-cell *matCellDef="let element">
+      <button
+        mat-mini-fab
+        color="accent"
+        (click)="deleteTask(element)"
+        aria-label="Remove Task"
+      >
+        <mat-icon>remove</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<button
+  mat-fab
+  color="accent"
+  aria-label="Icon button with an add icon"
+  routerLink="/tasks/create"
+  [state]="{ id: category?.id }"
+>
+  <mat-icon>add</mat-icon>
+</button>

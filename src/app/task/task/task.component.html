@@ -1,0 +1,49 @@
+<h1>{{ type }} Task</h1>
+<form [formGroup]="taskFormGroup" (ngSubmit)="submitHandler()">
+  <mat-form-field class="example-full-width">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-select formControlName="categoryId">
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div
+    formArrayName="teamMemberIds"
+    *ngFor="let teamMember of teamMembers; let i = index"
+  >
+    <mat-checkbox [formControlName]="i" *ngIf="task || type === 'Create'">
+      <img
+        [src]="teamMembers[i].avatar"
+        [alt]="teamMembers[i].name"
+        loading="lazy"
+      />
+      {{ teamMembers[i].name }}
+    </mat-checkbox>
+  </div>
+
+  <img *ngIf="imagePreview" [src]="imagePreview" alt="Image preview" />
+
+  <span *ngIf="taskFormGroup.value.imageUrl && !imagePreview">
+    <img
+      src="{{
+        taskFormGroup.value.imageUrl
+      }}-/resize/x128/-/quality/smart/-/format/auto/"
+      loading="lazy"
+    />
+  </span>
+
+  <input
+    type="file"
+    name="fileToUpload"
+    accept="image/*"
+    (change)="handleImageInput($event)"
+  />
+
+  <button mat-raised-button color="primary" type="submit">{{ type }}</button>
+</form>

@@ -1,0 +1,8 @@
+<h1>Edit Category</h1>
+<form (ngSubmit)="submitHandler()">
+<mat-form-field>
+  <mat-label>Name</mat-label>
+  <input matInput placeholder="Name" [formControl]="categoryEdit" />
+</mat-form-field>
+<button mat-raised-button color="primary" type="submit">Submit</button>
+</form>

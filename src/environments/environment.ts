@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiEndpoint: 'https://63761992b5f0e1eb850298da.mockapi.io',
+  imageApiEndpoint: 'https://upload.uploadcare.com/base/',
+  imageApiPublicKey: 'b0183e1485743b1d9c0e',
 };
 
 /*
